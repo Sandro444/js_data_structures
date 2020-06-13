@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function LinkedList(){
+            this.head = null;
+            this.tail = null;
+        }
+        
+        function Node(value, next, prev){
+            this.value = value;
+            this.next = next;
+            this.prev = prev;
+        }
+
+        LinkedList.prototype.addToHead = function(value){
+            //instanciate new node in linked list
+            var newNode = new Node(value, this.head, null);
+            
+            //set head nodes prev prop to new node inited
+            if (this.head) this.head.prev = newNode;
+            //if there isn't head node, set tail to this node
+            else this.tail = newNode;
+            //finaly, set head to new node
+            this.head = newNode;
+        }
+
+        LinkedList.prototype.addToTail = function(value){
+            //init new node
+            var newNode = new Node(value, null, this.tail)
+            //set tail node next to prev node
+            if (this.tail) this.tail.next = newNode;
+            //set head as newnode if there is not node in list
+            else this.head = newNode;
+
+            this.tail = newNode;
+        }
+
+        LinkedList.prototype.removeHead = function(){
+            //check if there is head in list
+            if (!this.head) return;
+            //copy head value
+            var val = this.head.value;
+            //(3)set head's next value as new head
+            this.head = this.head.next;
+            //check if new head was last element in list
+            if (!this.head.next) this.tail = null;
+            //check if head still exists after head removal
+            if(this.head) this.head.prev = null;
+            //or if there was 1 node in list, set tail as null
+            //head will be already null, because (3) will return null
+            else this.tail = null;
+            //then return value
+            return val;
+        }
+        LinkedList.prototype.removeTail = function(){
+            //check if there is tail in list
+            if (!this.tail) return;
+            //copy tail value
+            var val = this.tail.value;
+            //(3)set tail's prev value as new tail
+            this.tail = this.tail.prev;
+            //check if new tail was first element in list
+            if (!this.tail.prev) this.head = null;
+            //check if tail still exists after tail removal
+            if(this.tail) this.tail.next = null;
+            //or if there was 1 node in list, set head as null
+            //tail will be already null, because (3) will return null
+            else this.head = null;
+            //then return value
+            return val;
+        }
+
+        LinkedList.prototype.search = function(searchValue){
+            var currentNode = this.head;
+            while(currentNode){
+                if (currentNode.value == searchValue) return currentNode.value;
+                currentNode = currentNode.next;
+            }
+            return null;
+        }
+
+        LinkedList.prototype.indexOf = function(searchValue){
+            var currentNode = this.head;
+            var index = 0;
+            var answers = [];
+            while(currentNode){
+                if (currentNode.value == searchValue){
+                    answers.push(index);
+                }
+                currentNode = currentNode.next;
+                index += 1;
+            }
+            return answers;
+        }
+
+        var ll = new LinkedList();
+
+        ll.addToHead(100);
+        ll.addToHead(200);
+        ll.addToTail(300);
+        ll.addToHead(100);
+        ll.addToHead(200);
+        ll.addToTail(300);
+        ll.addToHead(100);
+        ll.addToHead(200);
+        ll.addToTail(300);
+        ll.addToHead(100);
+        ll.addToHead(200);
+        ll.addToTail(300);
+        //console.log(ll.removeTail());
+        //console.log(ll.removeHead());
+        console.log(ll.indexOf(100));
+    </script>
+</body>
+</html>
